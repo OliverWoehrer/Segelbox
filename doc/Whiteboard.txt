@@ -1,0 +1,56 @@
+Requirements:	Tilt Compensation
+			GPS (Magnetic Heading)
+			Barometer and Temp
+			NMEA via USB
+
+
+============================================
+NMEA
+============================================
+HowTo		[sdfjkl.org]
+		tutorial about basic NMEA use
+		with Arduino USB Port to PC
+		***	https://sdfjkl.org/blog/2017-08-09-nanobaro/
+
+
+
+============================================
+Tilt Compensation
+============================================
+HowTo		[GitHub]
+		tilt compensated compass with:
+		HMC5883L (compass)
+		MPU6050 (roll and pitch)
+		***	https://github.com/visakhanc/eCompass	
+
+		[Mechatroniks.net]
+		use breakeout board GY-80, without tilt compensation
+		***	https://github.com/visakhanc/eCompass
+
+Threat	[Arduino Forum]
+		thread with tilt compensation
+		***	https://forum.arduino.cc/index.php?topic=508828.0
+		
+Module	[GY-91]
+		Compass, Gyro/Accelerometer, Atmosphereic Sensor
+
+
+============================================
+GPS
+============================================
+HowTo		[GitHub]
+		database for library and example codes
+		***	https://github.com/sparkfun/SparkFun_GPS_Breakout_XA1110_Qwiic
+
+Threat	[World Magnetic Model]
+		calculate Magnetic Declination via Software (c based)
+		***	https://www.ngdc.noaa.gov/geomag/WMM/soft.shtml
+
+		find Magnetic Declination via Database
+
+Module	[Adafruit]
+		Ultimate GPS Breakout v3
+		with UART bus and library
+		***	https://learn.adafruit.com/adafruit-ultimate-gps/direct-computer-wiring
+
+		
