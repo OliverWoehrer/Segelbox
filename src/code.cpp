@@ -76,7 +76,7 @@ void buttonHandler_Task(void* parameter) {
  */
 void interfaceUSB_Task(void* parameter) {
     // Initalize Task:
-    Serial.printf("Created receiveUSB Task on Core %d\r\n",xPortGetCoreID());
+    Serial.printf("Created interfaceUSB Task on Core %d\r\n", xPortGetCoreID());
     String inputString = "";
     
     while(1) {
@@ -116,7 +116,7 @@ void interfaceUSB_Task(void* parameter) {
             } else if(inputString == "run") {
                 currentCommand = RUN;
                     Serial.printf("[NMEA Service] -> output enabled\r\n");
-                    // GPS::enable();
+                    GPS::enable();
                     GY91::enable();
             } else {
                 Serial.printf("Unknown command: %s\r\n"
@@ -182,6 +182,7 @@ void parseMotionData_Task(void* parameter) {
         // Read Values:
         GY91::orientation_t orientationAngles = GY91::getOrientationAngles();
         GY91::atmosphere_t atmosphere = GY91::getAtmosphere();
+        //Serial.printf("roll = %+06.2f | pitch = %+06.2f | yaw = %+06.2f\r\n", orientationAngles.roll, orientationAngles.pitch, orientationAngles.yaw);
         
         // Build NMEA Sentences:
         NMEA::buildXDR(xdr, orientationAngles.roll, orientationAngles.pitch);
@@ -192,7 +193,6 @@ void parseMotionData_Task(void* parameter) {
             Serial.printf("%s", hdm);
             Serial.printf("%s", mdr);
         }
-
     }
 
     vTaskDelete(NULL); // delete this task
