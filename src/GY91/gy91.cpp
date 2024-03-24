@@ -842,7 +842,7 @@ int init(TaskFunction_t parseMotionDataFunc) {
     configASSERT(sensorReadout_Handle);
 
     // Create Sensor Read-Out Task:
-    xTaskCreate(parseMotionDataFunc, "parseMotionDataTask", 8*STACK_SIZE, NULL, 0, &parseMotionData_Handle);
+    xTaskCreate(parseMotionDataFunc, "parseMotionDataTask", 9*STACK_SIZE, NULL, 0, &parseMotionData_Handle);
     configASSERT(parseMotionData_Handle);
     vTaskSuspend(parseMotionData_Handle);
     
@@ -885,9 +885,9 @@ orientation_t getOrientationAngles(void) {
     float mz = magValueVector.z;
     
     // Calculate Roll and Pitch Angle:
-    float norm = sqrtf(ax*ax + ay*ay + az*az);
-    float roll = -(acos(ax/norm) - M_PI_2); // -(acrtan(ax/norm) - PI/2), in rad
-    float pitch = acos(ay/norm) - M_PI_2; // acrtan(ay/norm) - PI/2, in rad
+    // float norm = sqrtf(ax*ax + ay*ay + az*az);
+    float roll = atan2(az, ax) - M_PI_2;  // acrtan(az/ax) - PI/2, in rad
+    float pitch = atan2(az, ay) - M_PI_2; // acrtan(az/ay) - PI/2, in rad
     float yaw = 0.0;
 
     // Coordinate Transfomation (Magnetometer to Horizontal):
@@ -899,9 +899,9 @@ orientation_t getOrientationAngles(void) {
 
     // Rotate Around Y Axis (Pitch Angle):
     float cache2[3] = {mx, my, mz};    
-    mx = cache2[0]*cos(pitch) + cache2[2]*sin(pitch);
+    mx = cache2[0]*cos(-pitch) + cache2[2]*sin(-pitch);
     my = my;
-    mz = -cache2[0]*sin(pitch) + cache2[2]*cos(pitch);
+    mz = -cache2[0]*sin(-pitch) + cache2[2]*cos(-pitch);
 
     // Get Heading of Transformed Vector (Yaw Angle):
     yaw = -atan2(my, mx);
@@ -913,10 +913,6 @@ orientation_t getOrientationAngles(void) {
     yaw += +4; // compass declination in Vienna: +4° 22'
     if (yaw < 0) {
         yaw += 360; // make sure yaw is between 0...360 deg
-    }
-    
-    if(false) {
-        Serial.printf("roll = %+06.2f | pitch = %+06.2f | yaw = %+06.2f\r\n", roll, pitch, yaw);
     }
 
     orientation_t orientationAngles = {
