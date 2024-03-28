@@ -2,7 +2,7 @@
  * Project: Segelbox
  * @author Oliver Woehrer
  * @date 25.07.19
- * inspired by Basic Example Code MPU9250_MS5637_t3 written by Kris Winer on April 1, 2014
+ * Inspired by Basic Example Code MPU9250_MS5637_t3 written by Kris Winer on April 1, 2014
  * 
  * -> serial commands to interact with the device
 */
