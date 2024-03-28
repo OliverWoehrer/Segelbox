@@ -10,8 +10,18 @@
 
 #include "Arduino.h"
 
+// Button:
+#define BUTTON 2 // button normally closed (NC)
+#define BTN_SAMPLING_RATE 100000
+#define STACK_SIZE 2048 // default stack size: 2048 words = 8MB
+
+// Buzzer:
+#define BUZZER 4
 #define BEEP_LENGTH_SHORT 10 // length of beep in ms
 #define BEEP_LENGTH_LONG 1000 // length of beep in ms
+
+// Leds:
+#define LED_BLUE 2 // onboard led (not used atm)
 
 namespace Hardware {
 
