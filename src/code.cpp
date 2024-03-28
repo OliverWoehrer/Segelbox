@@ -8,7 +8,7 @@
 */
 #include "Arduino.h" // include basic arduino functions
 #include "driver/uart.h"
-#include "USBInterface/usb_interface.h"
+#include "UserInterface/ui.h"
 #include "Hardware/hw.h"
 #include "GPS/gps.h"
 #include "GY91/gy91.h"
@@ -16,20 +16,6 @@
 
 #define BAUD_RATE 115200
 #define READ_PERIODE 1000 // needs to be at least: SENSOR_SAMPLE_PERIODE * ACCUMULATION_COUNT
-
-//===============================================================================================
-// GLOBAL VARIABLES
-//===============================================================================================
-enum Command {
-    NONE,
-    HELP,
-    CAL,
-    RUN,
-    COMP,
-    UNKNOWN
-};
-Command currentCommand = NONE;
-
 
 //===============================================================================================
 // SCHEDULED TASKS
@@ -50,7 +36,7 @@ void buttonHandler_Task(void* parameter) {
     while(1) {
         vTaskSuspend(NULL); // suspend this task, resume from button ISR
 
-        if(currentCommand == CAL) {
+        if(SerialCLI::getCurrentCommand() == SerialCLI::CAL) {
             if(calibrationStarted) {
                 GY91::stopCalibration();
                 calibrationStarted = false;
@@ -94,35 +80,19 @@ void interfaceUSB_Task(void* parameter) {
             }
         }
 
+        // Parse Command Line:
         if(stringComplete) { // received a command line
-            // Lock USB Output For Others:
+            // Disable Serial Output:
             GPS::disable();
             GY91::disable();
 
             // Process Command Line:
-            inputString.trim(); // remove white spaces (CR, LF, TABSTOP)
-            if(inputString == "help") {
-                Serial.printf("[Segelbox Help] -> output disabled!\r\n"
-                "Commands:\r\n"
-                "\tcal\t...enable calibration of magnetic field (compass)\r\n"
-                "\trun\t...enable the NEMA output again, stopped when entering a command\r\n"
-                "\thelp\t...display this help page\r\n"
-                "\r\n");
-                currentCommand = HELP;
-            } else if(inputString == "cal") {
-                currentCommand = CAL;
-                Serial.printf("[Calibration] -> output disabled\r\n"
-                "Press the button to start/stop the calibration.\r\n");
-            } else if(inputString == "run") {
-                currentCommand = RUN;
-                    Serial.printf("[NMEA Service] -> output enabled\r\n");
-                    GPS::enable();
-                    GY91::enable();
-            } else {
-                Serial.printf("Unknown command: %s\r\n"
-                "Type \"help\" to display the help page.\r\n", inputString.c_str());
-                currentCommand = UNKNOWN;
+            SerialCLI::Command cmd = SerialCLI::parseCommand(inputString.c_str());
+            if(cmd == SerialCLI::RUN) {
+                GPS::enable();
+                GY91::enable();
             }
+            
             inputString = "";
         }     
     }
@@ -178,7 +148,7 @@ void parseMotionData_Task(void* parameter) {
     while(1) {
         xTaskDelayUntil(&xLastWakeTime, xFrequency); // wait for the next cycle, blocking
         // [INFO] wait at least one sample to be taken to prevent double reading the same value, at 100 Hz aproximently 10 milli seconds
-        
+
         // Read Values:
         GY91::orientation_t orientationAngles = GY91::getOrientationAngles();
         GY91::atmosphere_t atmosphere = GY91::getAtmosphere();
@@ -213,8 +183,8 @@ void setup(void) {
 
     // Initalize USB Interface:
     Serial.begin(BAUD_RATE);
-    if(USBInterface::init(interfaceUSB_Task) == EXIT_FAILURE) {
-        Serial.printf("Failed to initialize USB interface!\r\n");
+    if(SerialCLI::init(interfaceUSB_Task) == EXIT_FAILURE) {
+        Serial.printf("Failed to initialize user interface!\r\n");
         return;
     }
 
