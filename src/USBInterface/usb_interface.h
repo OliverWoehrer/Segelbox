@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#define STACK_SIZE 2048 // default stack size: 2MB
+#define STACK_SIZE 2048 // default stack size: 2048 words = 8MB
 
 namespace USBInterface {
 
