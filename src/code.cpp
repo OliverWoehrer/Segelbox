@@ -146,6 +146,7 @@ void parseMotionData_Task(void* parameter) {
     char mdr[82] = "";
 
     while(1) {
+        xLastWakeTime = xTaskGetTickCount(); // set tick count every time to prevent bursts after longer periode of suspended task
         xTaskDelayUntil(&xLastWakeTime, xFrequency); // wait for the next cycle, blocking
         // [INFO] wait at least one sample to be taken to prevent double reading the same value, at 100 Hz aproximently 10 milli seconds
 
