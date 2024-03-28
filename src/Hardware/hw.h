@@ -12,7 +12,7 @@
 
 // Button:
 #define BUTTON 2 // button normally closed (NC)
-#define BTN_SAMPLING_RATE 100000
+#define BTN_SAMPLING_RATE 100000 // sample periode in micro seconds
 #define STACK_SIZE 2048 // default stack size: 2048 words = 8MB
 
 // Buzzer:
