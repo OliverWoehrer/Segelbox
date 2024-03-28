@@ -377,8 +377,8 @@ namespace MPU9250 {
         I2C::writeByte(MPU9250_ADDRESS, MPU9250_CONFIG, config);
 
         // Set Sample Rate:
-        const uint8_t samplingDevider = SENSOR_SAMPLE_PERIODE - 1;
-        I2C::writeByte(MPU9250_ADDRESS, MPU9250_SMPLRT_DIV, samplingDevider);  // sample rate: 10Hz = 1kHz/(1+SMPLRT_DIV), SMPLRT_DIV=99
+        const uint8_t samplingDevider = SENSOR_SAMPLE_PERIODE - 1; // sample periode = 1kHz/(1+SMPLRT_DIV), SMPLRT_DIV=99
+        I2C::writeByte(MPU9250_ADDRESS, MPU9250_SMPLRT_DIV, samplingDevider);
 
         // Set Gyro Configuration Register:
         // [7:5] GYRO_SELFTEST = XYZ
@@ -838,11 +838,11 @@ int init(TaskFunction_t parseMotionDataFunc) {
 
     // Create Sensor Read-Out Task:
     xTaskHandle sensorReadout_Handle = NULL;
-    xTaskCreate(readSensorData_Task, "sensorReadoutTask", 4*STACK_SIZE, NULL, 0, &sensorReadout_Handle);
+    xTaskCreate(readSensorData_Task, "sensorReadoutTask", 2*STACK_SIZE, NULL, 0, &sensorReadout_Handle);
     configASSERT(sensorReadout_Handle);
 
     // Create Sensor Read-Out Task:
-    xTaskCreate(parseMotionDataFunc, "parseMotionDataTask", 9*STACK_SIZE, NULL, 0, &parseMotionData_Handle);
+    xTaskCreate(parseMotionDataFunc, "parseMotionDataTask", 4*STACK_SIZE, NULL, 0, &parseMotionData_Handle);
     configASSERT(parseMotionData_Handle);
     vTaskSuspend(parseMotionData_Handle);
     
