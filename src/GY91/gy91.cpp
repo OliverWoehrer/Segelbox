@@ -91,8 +91,8 @@ data_vector_t getMovingMedian(data_vector_t dataSamples[], size_t length) {
     }
     
     // Calculate Moving Median:
-    int lowerCutIdx = (int)(length * 0.15); 
-    int upperCutIdx = (int)(length * 0.85);
+    int lowerCutIdx = (int)(length * 0.00);
+    int upperCutIdx = (int)(length * 1.00);
     int sumX = 0;
     int sumY = 0;
     int sumZ = 0;
@@ -842,7 +842,7 @@ int init(TaskFunction_t parseMotionDataFunc) {
     configASSERT(sensorReadout_Handle);
 
     // Create Sensor Read-Out Task:
-    xTaskCreate(parseMotionDataFunc, "parseMotionDataTask", 4*STACK_SIZE, NULL, 0, &parseMotionData_Handle);
+    xTaskCreate(parseMotionDataFunc, "parseMotionDataTask", 7*STACK_SIZE, NULL, 0, &parseMotionData_Handle);
     configASSERT(parseMotionData_Handle);
     vTaskSuspend(parseMotionData_Handle);
     

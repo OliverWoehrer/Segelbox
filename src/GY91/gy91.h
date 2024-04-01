@@ -148,8 +148,8 @@
 #define BMP280_CALIB00    0x88
 
 #define SENSOR_SAMPLE_PERIODE 10 // loop period in ms
-#define ACCUMULATION_COUNT 10
-#define AVG_SAMPLE_COUNT 60
+#define ACCUMULATION_COUNT 1
+#define AVG_SAMPLE_COUNT 100
 #define STACK_SIZE 2048 // default stack size: 2048 words = 8MB
 // Time it takes to update the output fully in ms: SENSOR_SAMPLE_PERIODE * ACCUMULATION_COUNT * AVG_SAMPLE_COUNT
 
