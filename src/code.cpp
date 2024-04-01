@@ -156,13 +156,12 @@ void parseMotionData_Task(void* parameter) {
         //Serial.printf("roll = %+06.2f | pitch = %+06.2f | yaw = %+06.2f\r\n", orientationAngles.roll, orientationAngles.pitch, orientationAngles.yaw);
         
         // Build NMEA Sentences:
-        NMEA::buildXDR(xdr, orientationAngles.roll, orientationAngles.pitch);
+        NMEA::buildXDR(xdr, orientationAngles.roll, orientationAngles.pitch, atmosphere.pressure);
         NMEA::buildHDM(hdm, orientationAngles.yaw);
         NMEA::buildMDR(mdr, atmosphere.temperature, atmosphere.pressure);
         if(true) {
             Serial.printf("%s", xdr);
             Serial.printf("%s", hdm);
-            Serial.printf("%s", mdr);
         }
     }
 
