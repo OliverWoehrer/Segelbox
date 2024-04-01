@@ -9,7 +9,7 @@
 
 namespace NMEA {
 
-    void buildXDR(char buff[], float roll, float pitch);
+    void buildXDR(char buff[], float roll, float pitch, float pressure);
     void buildHDM(char buff[], float yaw);
     void buildMDR(char buff[], float pressure, float temperature);
 

@@ -26,9 +26,9 @@ uint8_t getCRC(char sentence[]) {
     return crc;
 }
 
-void buildXDR(char buff[], float roll, float pitch) {    
+void buildXDR(char buff[], float roll, float pitch, float pressure) {    
     char sentence[80] = "";
-    sprintf(sentence, "%sXDR,A,%.0f,D,Roll,A,%.0f,D,Pitch", TALKER_ID_II, roll, pitch);
+    sprintf(sentence, "%sXDR,A,%.0f,D,ROLL,A,%.0f,D,PITCH,P,%.0f,B,BARO", TALKER_ID_II, roll, pitch, pressure);
 
     char msg[82] = ""; // max length of nmea message including $ and <LF>
     char crc = getCRC(sentence);
@@ -37,7 +37,7 @@ void buildXDR(char buff[], float roll, float pitch) {
 
 void buildHDM(char buff[], float heading) {
     char sentence[80] = "";
-    sprintf(sentence, "%sHDM,%.0f,M", TALKER_ID_II, heading);
+    sprintf(sentence, "%sHDM,%.1f,M", TALKER_ID_HC, heading);
 
     char msg[82] = ""; // max length of nmea message including $ and <LF>
     char crc = getCRC(sentence);
