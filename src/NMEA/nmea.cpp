@@ -32,7 +32,7 @@ void buildXDR(char buff[], float roll, float pitch, float pressure) {
 
     char msg[82] = ""; // max length of nmea message including $ and <LF>
     char crc = getCRC(sentence);
-    sprintf(buff, "$%s*%X\r\n", sentence, crc);
+    sprintf(buff, "$%s*%02X\r\n", sentence, crc);
 }
 
 void buildHDM(char buff[], float heading) {
@@ -41,7 +41,7 @@ void buildHDM(char buff[], float heading) {
 
     char msg[82] = ""; // max length of nmea message including $ and <LF>
     char crc = getCRC(sentence);
-    sprintf(buff, "$%s*%X\r\n", sentence, crc);
+    sprintf(buff, "$%s*%02X\r\n", sentence, crc);
 }
 
 void buildMDR(char buff[], float temperature, float pressure) {    
@@ -50,7 +50,7 @@ void buildMDR(char buff[], float temperature, float pressure) {
 
     char msg[82] = ""; // max length of nmea message including $ and <LF>
     char crc = getCRC(sentence);
-    sprintf(buff, "$%s*%X\r\n", sentence, crc);
+    sprintf(buff, "$%s*%02X\r\n", sentence, crc);
 }
 
 }
